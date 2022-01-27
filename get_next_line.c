@@ -6,20 +6,21 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:13:19 by jferro            #+#    #+#             */
-/*   Updated: 2022/01/27 19:49:56 by jferro           ###   ########.fr       */
+/*   Updated: 2022/01/27 20:50:45 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-int	new_line_in_buffer(char *buffer)
+int	new_line_in_(char *buffer)
 {
-	char	*line;
 	char	*p;
 
 	p = ft_strchr(buffer, '\n');
-	if (p != NULL)
+	if (p == NULL)
+		return (0);
+	else
 		return (1);
 }
 
@@ -30,18 +31,17 @@ char	*get_next_line(int fd)
 	int			read_size;
 	int			line_size;
 
-	read_size = read(fd, buffer, BUFFER_SIZE);
 	if (read_size < 0)
 		return (NULL);
 	line = (char *)malloc((sizeof(char)) * line_size);
 	// 
-	if (new_line_in_buffer(buffer))
+	if (new_line_in_(buffer))
 	{
 		
 	}
 	else
 	{
-		
+		read_size = read(fd, buffer, BUFFER_SIZE);
 	}
 }
 
