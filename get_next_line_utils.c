@@ -6,20 +6,56 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:38:08 by jferro            #+#    #+#             */
-/*   Updated: 2022/01/27 20:17:19 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/02 20:10:52 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (*str)
+	{
+		str++;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	int		i;
+	int		len;
+	char	*p;
+
+	i = 0;
+	len = ft_strlen(s1);
+	p = (char *)malloc(len + 1);
+	if (p == NULL)
+		return (NULL);
+	while (i < len)
+	{
+		p[i] = s1[i];
+		i++;
+	}
+	p[i] = '\0';
+	return (p);
+}
+
 char	*ft_strchr(const char *s, int c)
 {
+	if (!s)
+		return(0);
 	while (*s && *s != (char)c)
 		s++;
 	if (*s == (char)c)
 		return ((char *)s);
 	return (0);
 }
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	s1_len;

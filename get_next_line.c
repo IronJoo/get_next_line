@@ -5,56 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/27 18:13:19 by jferro            #+#    #+#             */
-/*   Updated: 2022/01/27 21:07:55 by jferro           ###   ########.fr       */
+/*   Created: 2022/02/01 14:57:43 by jferro            #+#    #+#             */
+/*   Updated: 2022/02/02 20:24:31 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-
-int	new_line_in_(char *buffer)
+#include <string.h>
+char	*read_and_save(int fd, char *save)
 {
-	char	*p;
+	char	*buffer;
+	int		read_size;
 
-	p = ft_strchr(buffer, '\n');
-	if (p == NULL)
-		return (0);
-	else
-		return (1);
+	buffer = (char *)malloc((sizeof(char) * (BUFFER_SIZE + 1)));
+	if (!buffer)
+		return (NULL);
+	read_size = 1;
+	while (!ft_strchr(save, '\n') && read_size != 0)
+	{
+		read_size = read(fd, buffer, BUFFER_SIZE);
+		if (read_size == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		buffer[read_size] = '\0';
+		if (!save)
+			save = ft_strdup(buffer);
+		else
+			save = ft_strjoin(save, buffer);
+	}
+	free(buffer);
+	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*line;
-	int			read_size;
-	int			line_size;
-
-	if (read_size < 0)
-		return (NULL);
-	line = (char *)malloc((sizeof(char)) * line_size);
-	// 
-	if (new_line_in_(buffer))
-	{
-		
-	}
-	else
-	{
-		read_size = read(fd, buffer, BUFFER_SIZE);
-	}
+	static char	*save;
+	save = read_and_save(fd, save);
+	return (save);
 }
-
 int	main(void)
 {
-	int		fd;
-	char	*str;
-
+	int fd;
+	//char *text;
 	fd = open("text.txt", O_RDONLY);
-	printf("%s\n", str);
-	for (int i = 0; i < 100; i++)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-	}
+	//text = get_next_line(fd);
+	printf("%s\n" ,get_next_line(fd));
 }
