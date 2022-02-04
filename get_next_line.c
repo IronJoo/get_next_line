@@ -6,7 +6,7 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:57:43 by jferro            #+#    #+#             */
-/*   Updated: 2022/02/04 17:55:11 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/04 19:37:13 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@ char	*clean_save(char *save)
 	int		j;
 	char	*p;
 
+	p = NULL;
 	i = 0;
 	j = 0;
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
 	j = i;
+	j++;
 	while (save[j] != '\n' && save[j] != '\0')
 		j++;
 	p = (char *)malloc((sizeof(char)) * (j - i));
@@ -36,6 +38,7 @@ char	*clean_save(char *save)
 		while (save[++i] != '\n' && save[i] != '\0')
 		{
 			p[j] = save[i];
+			j++;
 		}
 	}
 	else
@@ -121,9 +124,7 @@ int	main(void)
 	// printf("Insert input: \n");
 	// int fd = 0;
 	// printf("You inserted = %s", get_next_line(fd));
-
 	int fd = open("text.txt", O_RDONLY);
-	//char *line = get_next_line(fd);
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
 	printf("%s", get_next_line(fd));
