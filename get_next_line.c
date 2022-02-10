@@ -6,7 +6,7 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:57:43 by jferro            #+#    #+#             */
-/*   Updated: 2022/02/04 19:37:13 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/10 21:02:32 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,40 +18,39 @@ char	*clean_save(char *save)
 {
 	int		i;
 	int		j;
-	char	*p;
+	char	*new_save;
 
-	p = NULL;
 	i = 0;
 	j = 0;
+	if (!save)
+		return (NULL);
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
-	j = i;
-	j++;
-	while (save[j] != '\n' && save[j] != '\0')
+	j = i + 1;
+	while (save[j] != '\0')
 		j++;
-	p = (char *)malloc((sizeof(char)) * (j - i));
-	if (!p)
+	new_save = (char *)malloc((sizeof(char)) * (j - i));
+	if (!new_save)
 		return (NULL);
 	if (save[i] != '\0')
 	{
 		j = 0;
-		while (save[++i] != '\n' && save[i] != '\0')
-		{
-			p[j] = save[i];
-			j++;
-		}
+		i++;
+		while (save[i] != '\0')
+			new_save[j++] = save[i++];
+		new_save[j] = '\0';
 	}
 	else
 		return (save);
-	return (p);
+	return (new_save);
 }
 
-void	copy_string(char *restrict dst, const char *restrict src, int size)
+void	copy_string(char *dst, const char *src, int size)
 {
 	int	i;
 
 	i = 0;
-	if (size > 0)
+	if (size >= 0 && src)
 	{
 		while (src[i] != '\n' && src[i] != '\0' && i < size)
 		{
@@ -70,16 +69,18 @@ void	copy_string(char *restrict dst, const char *restrict src, int size)
 char	*get_line(char	*save)
 {
 	int		i;
-	char	*new_save;
+	char	*next_line;
 
 	i = 0;
+	if (!save)
+		return (NULL);
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
-	new_save = (char *)malloc((sizeof(char)) * (i + 2));
-	if (!new_save)
+	next_line = (char *)malloc((sizeof(char)) * (i + 2));
+	if (!next_line)
 		return (NULL);
-	copy_string(new_save, save, i);
-	return (new_save);
+	copy_string(next_line, save, i);
+	return (next_line);
 }
 
 char	*read_and_save(int fd, char *save)
@@ -100,7 +101,7 @@ char	*read_and_save(int fd, char *save)
 			return (NULL);
 		}
 		buffer[read_size] = '\0';
-		if (!save)
+		if (!save || !*save)
 			save = ft_strdup(buffer);
 		else
 			save = ft_strjoin(save, buffer);
@@ -114,19 +115,24 @@ char	*get_next_line(int fd)
 	static char	*save;
 	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
+		return (NULL);
+	line = NULL;
 	save = read_and_save(fd, save);
 	line = get_line(save);
 	save = clean_save(save);
 	return (line);
 }
-int	main(void)
-{
-	// printf("Insert input: \n");
-	// int fd = 0;
-	// printf("You inserted = %s", get_next_line(fd));
-	int fd = open("text.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-}
+// int	main(void)
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	if (fd == -1)
+// 		return (1);
+// 	char *str = get_next_line(fd);
+// 	while (str)
+// 	{
+// 		printf("|%s", str);
+// 		free(str);
+// 		str = get_next_line(fd);
+// 	}
+// }

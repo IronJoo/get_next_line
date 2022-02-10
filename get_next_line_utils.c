@@ -6,7 +6,7 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 18:38:08 by jferro            #+#    #+#             */
-/*   Updated: 2022/02/03 17:56:43 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/10 19:00:49 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	*ft_strdup(const char *s1)
 	int		len;
 	char	*p;
 
+	if (!s1 || !*s1)
+		return (NULL);
 	i = 0;
 	len = ft_strlen(s1);
 	p = (char *)malloc(len + 1);
@@ -64,8 +66,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	i;
 	size_t	j;
 
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s1 || !*s1)
+		return (ft_strdup(s2));
+	if (!s2 || !*s2)
+		return (ft_strdup(s1));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	i = 0;
