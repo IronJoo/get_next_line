@@ -7,3 +7,8 @@ firstattempt_get_next_line.c
 a.out.dSYM
 text2.txt
 gnlTester
+gnlTest
+gnlTest.dSYM
+._.DS_Store
+._get_next_line.c
+._text.txt

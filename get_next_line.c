@@ -6,12 +6,11 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:57:43 by jferro            #+#    #+#             */
-/*   Updated: 2022/02/10 21:02:32 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/10 22:45:49 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 #include <string.h>
 
 char	*clean_save(char *save)
@@ -23,26 +22,34 @@ char	*clean_save(char *save)
 	i = 0;
 	j = 0;
 	if (!save)
+	{
+		free(save);
 		return (NULL);
+	}
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
 	j = i + 1;
 	while (save[j] != '\0')
 		j++;
-	new_save = (char *)malloc((sizeof(char)) * (j - i));
-	if (!new_save)
-		return (NULL);
 	if (save[i] != '\0')
 	{
+		new_save = (char *)malloc((sizeof(char)) * (j - i));
+		if (!new_save)
+			return (NULL);
 		j = 0;
 		i++;
 		while (save[i] != '\0')
 			new_save[j++] = save[i++];
 		new_save[j] = '\0';
+		free(save);
+		if (!*new_save)
+		{
+			free(new_save);
+			new_save = NULL;
+		}
+		return (new_save);
 	}
-	else
-		return (save);
-	return (new_save);
+	return (save);
 }
 
 void	copy_string(char *dst, const char *src, int size)
@@ -119,20 +126,9 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = NULL;
 	save = read_and_save(fd, save);
+	if (!save)
+		return (NULL);
 	line = get_line(save);
 	save = clean_save(save);
 	return (line);
 }
-// int	main(void)
-// {
-// 	int fd = open("text.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (1);
-// 	char *str = get_next_line(fd);
-// 	while (str)
-// 	{
-// 		printf("|%s", str);
-// 		free(str);
-// 		str = get_next_line(fd);
-// 	}
-// }
