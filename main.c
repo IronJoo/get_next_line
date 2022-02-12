@@ -7,7 +7,7 @@ int	main(void)
 	if (fd == -1)
 		return (1);
 	char *str = get_next_line(fd);
-	while (str)
+	while (str && *str)
 	{
 		printf("%s", str);
 		free(str);

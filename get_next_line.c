@@ -107,11 +107,16 @@ char	*read_and_save(int fd, char *save)
 			free(buffer);
 			return (NULL);
 		}
+		// else if (read_size == 0)
+		// {
+		// 	free(buffer);
+		// 	return (NULL);
+		// }
 		buffer[read_size] = '\0';
-		if (!save || !*save)
-			save = ft_strdup(buffer);
-		else
-			save = ft_strjoin(save, buffer);
+		// if (!save || !*save)
+		// 	save = ft_strdup(buffer);
+		// else
+		save = ft_strjoin(save, buffer);
 	}
 	free(buffer);
 	return (save);
