@@ -13,7 +13,7 @@
 #include "get_next_line.h"
 #include <string.h>
 
-char	*clean_save(char *save)
+char	*clean_save(char *save) //needs condition for end of file, maybe?????
 {
 	int		i;
 	int		j;
@@ -99,7 +99,7 @@ char	*read_and_save(int fd, char *save)
 	if (!buffer)
 		return (NULL);
 	read_size = 1;
-	while (!ft_strchr(save, '\n') && read_size != 0)
+	while (!ft_strchr(save, '\n') && !ft_strchr(save, '\0') && read_size != 0)
 	{
 		read_size = read(fd, buffer, BUFFER_SIZE);
 		if (read_size == -1)
