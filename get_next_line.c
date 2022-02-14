@@ -109,7 +109,7 @@ char	*read_and_save(int fd, char *save)
 		}
 		buffer[read_size] = '\0';
 		save = ft_strjoin(save, buffer);
-	}
+	} 
 	free(buffer);
 	return (save);
 }
