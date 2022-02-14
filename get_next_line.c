@@ -79,7 +79,7 @@ char	*get_line(char	*save)
 	char	*next_line;
 
 	i = 0;
-	if (!save)
+	if (!*save)
 		return (NULL);
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
@@ -99,7 +99,7 @@ char	*read_and_save(int fd, char *save)
 	if (!buffer)
 		return (NULL);
 	read_size = 1;
-	while (!ft_strchr(save, '\n') && !ft_strchr(save, '\0') && read_size != 0)
+	while (!ft_strchr(save, '\n') && read_size != 0)
 	{
 		read_size = read(fd, buffer, BUFFER_SIZE);
 		if (read_size == -1)
@@ -107,15 +107,7 @@ char	*read_and_save(int fd, char *save)
 			free(buffer);
 			return (NULL);
 		}
-		// else if (read_size == 0)
-		// {
-		// 	free(buffer);
-		// 	return (NULL);
-		// }
 		buffer[read_size] = '\0';
-		// if (!save || !*save)
-		// 	save = ft_strdup(buffer);
-		// else
 		save = ft_strjoin(save, buffer);
 	}
 	free(buffer);
@@ -129,7 +121,6 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (NULL);
-	line = NULL;
 	save = read_and_save(fd, save);
 	if (!save)
 		return (NULL);
