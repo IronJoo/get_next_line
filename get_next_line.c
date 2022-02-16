@@ -6,71 +6,51 @@
 /*   By: jferro <jferro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 14:57:43 by jferro            #+#    #+#             */
-/*   Updated: 2022/02/10 22:45:49 by jferro           ###   ########.fr       */
+/*   Updated: 2022/02/16 01:37:50 by jferro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
 
-char	*clean_save(char *save) //needs condition for end of file, maybe?????
+char	*thankyou_bmiguel_(char *save, int i)
+{
+	char	*new_save;
+	int		j;
+
+	j = 0;
+	new_save = (char *)malloc((sizeof(char)) * (ft_strlen(save) - i++));
+	if (!new_save)
+		return (NULL);
+	while (save[i] != '\0')
+		new_save[j++] = save[i++];
+	new_save[j] = '\0';
+	free(save);
+	if (!*new_save)
+	{
+		free(new_save);
+		new_save = NULL;
+	}
+	return (new_save);
+}
+
+char	*clean_save(char *save)
 {
 	int		i;
-	int		j;
-	char	*new_save;
 
 	i = 0;
-	j = 0;
-	if (!save)
+	if (!*save)
 	{
 		free(save);
 		return (NULL);
 	}
 	while (save[i] != '\n' && save[i] != '\0')
 		i++;
-	j = i + 1;
-	while (save[j] != '\0')
-		j++;
 	if (save[i] != '\0')
-	{
-		new_save = (char *)malloc((sizeof(char)) * (j - i));
-		if (!new_save)
-			return (NULL);
-		j = 0;
-		i++;
-		while (save[i] != '\0')
-			new_save[j++] = save[i++];
-		new_save[j] = '\0';
-		free(save);
-		if (!*new_save)
-		{
-			free(new_save);
-			new_save = NULL;
-		}
-		return (new_save);
-	}
+		return (thankyou_bmiguel_(save, i));
+	free(save);
+	save = NULL;
 	return (save);
-}
-
-void	copy_string(char *dst, const char *src, int size)
-{
-	int	i;
-
-	i = 0;
-	if (size >= 0 && src)
-	{
-		while (src[i] != '\n' && src[i] != '\0' && i < size)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		if (src[i] == '\n')
-		{
-			dst[i] = '\n';
-			i++;
-		}
-		dst[i] = '\0';
-	}
 }
 
 char	*get_line(char	*save)
