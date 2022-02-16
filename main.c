@@ -1,9 +1,11 @@
 #include "get_next_line.h"
 #include <stdio.h>
+# include <fcntl.h>
 
 int	main(void)
 {
 	int fd = open("files/41_no_nl", O_RDONLY);
+
 	if (fd == -1)
 		return (1);
 	// char *str = get_next_line(fd);
